@@ -6,36 +6,22 @@ import random
 from PIL import Image, ImageTk
 
 # Load YOLO model
-model = YOLO("C:/Users/vlabs/Desktop/ewaste/model_training/runs/detect/train/weights/best.pt")
+model = YOLO("C:/Users/vlabs/Desktop/e-waste-detection-model/runs/detect/train/weights/best.pt")
 print("Model loaded successfully!")
 
-# Define new reduced class list
-class_names = ['ThreadError', 'cut', 'hole', 'object', 'stain']
-
-# Map old class IDs to new ones (adjust this based on your model's training classes)
-class_mapping = {
-    0: 'ThreadError',
-    1: 'cut',
-    2: 'hole',
-    3: 'object',
-    4: 'stain',
-    5: 'stain',
-    6: 'hole',
-    7: 'cut',
-    8: 'object',
-    9: 'ThreadError',
-    10: 'stain',
-    11: 'cut',
-    12: 'hole',
-    13: 'object'
-}
+# Define new class list for e-waste classification
+class_names = [
+    '9V Battery', 'Battery', 'HDD', 'Keyboard', 'NetworkSwitch',
+    'Printed Circuit Board PCB', 'Remote control', 'Router',
+    'Smart Phone', 'USB Flash Drive', 'Cable', 'Computer Mouse', 'Internal HDD'
+]
 
 # Create directory for detected objects
 os.makedirs("./detected_objects", exist_ok=True)
 
 # Create Tkinter classification window
 classification_window = tk.Tk()
-classification_window.title("Classified Objects Gallery")
+classification_window.title("E-Waste Classification Gallery")
 classification_window.geometry("1800x900")
 
 # Create a canvas with a scrollbar for gallery-style view
@@ -74,13 +60,7 @@ def process_images(folder_path):
             class_ids = results[0].boxes.cls.cpu().numpy().astype(int) if results[0].boxes else []
             print(f"Detected class IDs in {filename}: {class_ids}")  # Debug output
 
-            valid_classes = []
-            for class_id in class_ids:
-                if class_id in class_mapping:
-                    obj_class = class_mapping[class_id]
-                    valid_classes.append(obj_class)
-                else:
-                    print(f"Warning: Class ID {class_id} not found in mapping!")
+            valid_classes = [class_names[class_id] for class_id in class_ids if class_id < len(class_names)]
 
             # Save detected objects if valid
             for obj_class in valid_classes:
@@ -136,7 +116,7 @@ def on_closing():
 classification_window.protocol("WM_DELETE_WINDOW", on_closing)
 
 # Process images in the folder
-folder_path = "C:/Users/vlabs/Desktop/ewaste/Fabric_Defect_5Class/test/images"
+folder_path = "C:/Users/vlabs/Desktop/e-waste-detection-model/E-waste-detection-dataset/test/images"
 process_images(folder_path)
 
 # Start Tkinter main loop
