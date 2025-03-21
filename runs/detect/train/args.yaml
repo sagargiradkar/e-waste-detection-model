@@ -1,11 +1,11 @@
 task: detect
 mode: train
-model: yolo12n.pt
+model: yolo11n.pt
 data: C:/Users/vlabs/Desktop/e-waste-detection-model/E-waste-detection-dataset/data.yaml
-epochs: 10
+epochs: 100
 time: null
 patience: 100
-batch: 4
+batch: 8
 imgsz: 640
 save: true
 save_period: -1

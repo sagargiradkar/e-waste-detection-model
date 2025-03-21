@@ -6,13 +6,13 @@ if __name__ == '__main__':
     torch.cuda.empty_cache()
 
     # Load a model
-    model = YOLO("yolo12n.pt")
+    model = YOLO("yolo11n.pt")
 
     # Training parameters
     data_path = "C:/Users/vlabs/Desktop/e-waste-detection-model/E-waste-detection-dataset/data.yaml"
-    epochs = 10
+    epochs = 100
     imgsz = 640  # Reduced image size
-    batch_size = 4  # Reduced batch size
+    batch_size = 8  # Reduced batch size
     device = 'cuda' if torch.cuda.is_available() else 'cpu'  # Use CUDA if available
 
     # Train the model
